@@ -1,8 +1,11 @@
 package Main;
 
 import Entities.Player;
-import GUI.MenuManagement;
+import UI.GameUI;
+import UI.MenuUI;
+import Tiles.TileManagement;
 import Tools.GameStatus;
+import Tools.Keylogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +14,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     // screen settings
     public final int tileSize = 16 * 4;
-    public final int screenColumns = 16;
-    public final int screenRows = 12;
+    private final int screenColumns = 16;
+    private final int screenRows = 12;
+    public final int screenWidth = tileSize * screenColumns;
+    public final int screenHeight = tileSize * screenRows;
 
     // world size
     public final int worldColumnLimit = 50;
@@ -20,20 +25,20 @@ public class GamePanel extends JPanel implements Runnable {
 
     // target FPS
     final int FPS = 60;
-    // game is started to be in menu
+    // game is started to be in main menu
     public GameStatus currentStatus = GameStatus.menu;
-
+    // true until game has ended (player has pushed quit button)
     public boolean gameRunning = true;
 
     public Thread gameThread;
     public Keylogger keylogger = new Keylogger(this);
-    Player player = new Player(this, keylogger);
+    public Player player = new Player(this, keylogger);
     TileManagement tileM = new TileManagement(this);
-    MenuManagement menuM = new MenuManagement(this);
+    public MenuUI menuUI = new MenuUI(this);
+    public GameUI gameUI = new GameUI(this);
 
     GamePanel(){
-        this.setPreferredSize(new Dimension(tileSize * screenColumns,
-                                             tileSize * screenRows));
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keylogger);
@@ -96,7 +101,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         if (currentStatus == GameStatus.menu){
-            menuM.draw_main_menu(g2);
+            menuUI.draw_main_menu(g2);
         }
 
         // game shows behind the pause screen so we need to update it even thought game
@@ -104,9 +109,10 @@ public class GamePanel extends JPanel implements Runnable {
         if (currentStatus == GameStatus.play || currentStatus == GameStatus.pause){
             tileM.draw(g2);
             player.draw(g2);
+            gameUI.draw_inventory(g2);
         }
         if (currentStatus == GameStatus.pause){
-            menuM.draw_pause_menu(g2);
+            menuUI.draw_pause_menu(g2);
         }
 
         g2.dispose();

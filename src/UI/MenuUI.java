@@ -1,16 +1,16 @@
-package GUI;
+package UI;
 
 import Main.GamePanel;
 import Tools.GameStatus;
 
 import java.awt.*;
 
-public class MenuManagement {
+public class MenuUI {
 
     GamePanel gp;
     public int menuCommand = 0;
 
-    public MenuManagement(GamePanel gp){
+    public MenuUI(GamePanel gp){
         this.gp = gp;
     }
 
@@ -18,7 +18,7 @@ public class MenuManagement {
     // correct position for it to be in the center of the screen
     private int get_x_coord_for_centered_text(String text, Graphics2D g2){
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return gp.screenColumns * gp.tileSize / 2 - length / 2;
+        return gp.screenWidth / 2 - length / 2;
     }
 
     // MAIN MENU
@@ -78,8 +78,7 @@ public class MenuManagement {
 
         // making half transparent background for the pause menu
         g2.setColor(new Color(0,0,0, 200));
-        g2.fillRect(0,0, gp.screenColumns * gp.tileSize,
-                                gp.screenRows * gp.tileSize);
+        g2.fillRect(0,0, gp.screenWidth, gp.screenHeight);
 
         String text;
         int x, y;

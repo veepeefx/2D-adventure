@@ -1,7 +1,7 @@
 package Entities;
 
 import Main.GamePanel;
-import Main.Keylogger;
+import Tools.Keylogger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,8 +22,8 @@ public class Player extends Entity {
 
         set_start_values();
 
-        screenX = gp.screenColumns * gp.tileSize / 2 - gp.tileSize / 2;
-        screenY = gp.screenRows * gp.tileSize / 2 - gp.tileSize / 2;
+        screenX = gp.screenWidth / 2 - gp.tileSize / 2;
+        screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
         InputStream is = getClass().getResourceAsStream("/Entities/Player/player.png");
 
