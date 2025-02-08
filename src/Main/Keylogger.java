@@ -1,12 +1,20 @@
 package Main;
 
+import Tools.GameStatus;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Keylogger implements KeyListener {
 
-    public Boolean upPressed = false, downPressed = false, leftPressed = false,
-            rightPressed = false;
+    public Boolean upPressed = false, downPressed = false,
+                      leftPressed = false, rightPressed = false;
+
+    GamePanel gp;
+
+    public Keylogger(GamePanel gp){
+        this.gp = gp;
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -17,17 +25,45 @@ public class Keylogger implements KeyListener {
 
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
-            upPressed = true;
+        if (gp.currentStatus == GameStatus.pause || gp.currentStatus == GameStatus.menu){
+
+            if (code == KeyEvent.VK_ENTER){
+                gp.menuM.execute_command();
+            }
+
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                gp.menuM.menuCommand--;
+                if (gp.menuM.menuCommand < 0){
+                    gp.menuM.menuCommand = 3;
+                }
+            }
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                gp.menuM.menuCommand++;
+                if (gp.menuM.menuCommand > 3){
+                    gp.menuM.menuCommand = 0;
+                }
+            }
         }
-        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
-            rightPressed = true;
+
+        if (gp.currentStatus == GameStatus.play) {
+
+            if (code == KeyEvent.VK_ESCAPE){
+                gp.currentStatus = GameStatus.pause;
+            }
+
+            // moving in the play
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                upPressed = true;
+            }
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+                rightPressed = true;
+            }
         }
     }
 

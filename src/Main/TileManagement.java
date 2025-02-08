@@ -24,7 +24,7 @@ public class TileManagement {
 
         // loads all tile types to tileTypeArray
         load_tiles();
-        load_map("/Maps/test_map_50_50.txt");
+        load_map("/Maps/test_map_50_50_2");
     }
 
     private void load_tiles() {
@@ -35,7 +35,10 @@ public class TileManagement {
             tileTypeArray[0].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/grass.png"));
 
             tileTypeArray[1] = new Tile();
-            tileTypeArray[1].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/water.png"));
+            tileTypeArray[1].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/sand.png"));
+
+            tileTypeArray[2] = new Tile();
+            tileTypeArray[2].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/water.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
