@@ -1,6 +1,7 @@
 package Tiles;
 
 import Main.GamePanel;
+import Tools.Tools;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -8,40 +9,78 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 public class TileManagement {
 
     GamePanel gp;
-
     Tile[] tileTypeArray;
     int[][] mapInNums;
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    ArrayList<String> collisionStatus = new ArrayList<>();
 
     public TileManagement(GamePanel gp) {
 
         this.gp = gp;
-        // how many different tile types can be
-        tileTypeArray = new Tile[10];
+
         mapInNums = new int[gp.worldColumnLimit][gp.worldRowLimit];
 
-        // loads all tile types to tileTypeArray
+        load_tile_data();
         load_tiles();
-        load_map("/Maps/test_map_50_50_2");
+        load_map("/Maps/test");
+    }
+
+    private void make_tile(int index, String imagePath, boolean collision) {
+
+        Tools tool = new Tools();
+
+        try {
+            tileTypeArray[index] = new Tile();
+            tileTypeArray[index].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/" + imagePath));
+            tileTypeArray[index].image = tool.scaleImage(tileTypeArray[index].image, gp.tileSize, gp.tileSize);
+            tileTypeArray[index].collision = collision;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void load_tile_data() {
+
+        InputStream is = getClass().getResourceAsStream("/Maps/test_data");
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+
+        try {
+            while((line = br.readLine()) != null){
+                fileNames.add(line);
+                collisionStatus.add(br.readLine());
+            }
+            br.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void load_tiles() {
 
-        try {
+        tileTypeArray = new Tile[fileNames.size()];
 
-            tileTypeArray[0] = new Tile();
-            tileTypeArray[0].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/grass.png"));
+        for (int i = 0; i < fileNames.size(); i++){
+            String fileName;
+            boolean collision;
 
-            tileTypeArray[1] = new Tile();
-            tileTypeArray[1].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/sand.png"));
+            fileName = fileNames.get(i);
+            if (collisionStatus.get(i).equals("true")){
+                collision = true;
+            } else {
+                collision = false;
+            }
 
-            tileTypeArray[2] = new Tile();
-            tileTypeArray[2].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/water.png"));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            make_tile(i, fileName, collision);
         }
     }
 
@@ -94,7 +133,7 @@ public class TileManagement {
                 worldY + gp.tileSize > gp.player.worldMapY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldMapY + gp.player.screenY) {
 
-                g2.drawImage(tileTypeArray[tileNum].image,screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tileTypeArray[tileNum].image,screenX, screenY, null);
             }
             worldCol++;
 
