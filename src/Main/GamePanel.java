@@ -1,6 +1,7 @@
 package Main;
 
 import Entities.Player;
+import Objects.Tree;
 import UI.GameUI;
 import UI.MenuUI;
 import Tiles.TileManagement;
@@ -36,6 +37,12 @@ public class GamePanel extends JPanel implements Runnable {
     TileManagement tileM = new TileManagement(this);
     public MenuUI menuUI = new MenuUI(this);
     public GameUI gameUI = new GameUI(this);
+
+    // TEST TREES
+    Tree tree = new Tree(this, 0, 0);
+    Tree tree2 = new Tree(this, tileSize, 0);
+    Tree tree3 = new Tree(this, tileSize, tileSize);
+    Tree tree4 = new Tree(this, 0 , tileSize);
 
     GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -95,24 +102,33 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
 
-        if (currentStatus == GameStatus.menu){
+        if (currentStatus == GameStatus.menu) {
             menuUI.draw_main_menu(g2);
         }
 
         // game shows behind the pause screen so we need to update it even thought game
         // is paused
-        if (currentStatus == GameStatus.play || currentStatus == GameStatus.pause){
+        if (currentStatus == GameStatus.play || currentStatus == GameStatus.pause) {
+
             tileM.draw(g2);
+            // TESTING TREES
+            tree.draw(g2);
+            tree2.draw(g2);
+            tree3.draw(g2);
+            tree4.draw(g2);
+
             player.draw(g2);
+
             gameUI.draw_inventory(g2);
-        }
-        if (currentStatus == GameStatus.pause){
-            menuUI.draw_pause_menu(g2);
+
+            if (currentStatus == GameStatus.pause) {
+                menuUI.draw_pause_menu(g2);
+            }
         }
 
         g2.dispose();

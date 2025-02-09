@@ -4,10 +4,7 @@ import Main.GamePanel;
 import Tools.Keylogger;
 import Tools.Tools;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class Player extends Entity {
 
@@ -26,17 +23,9 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - gp.tileSize / 2;
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
-        // load player image
-        InputStream is = getClass().getResourceAsStream("/Entities/Player/player.png");
-        try{
-            image = ImageIO.read(is);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // scaling image
         Tools tool = new Tools();
-        image = tool.scaleImage(image, gp.tileSize, gp.tileSize);
+        // load scaled image
+        image = tool.load_image("/Entities/Player/player.png", gp.tileSize, gp.tileSize);
     }
 
     // sets values for player speed and coords which player spawns
