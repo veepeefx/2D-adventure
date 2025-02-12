@@ -1,23 +1,23 @@
-package Entities;
+package EntityObject.Entity;
 
+import EntityObject.EntityObject;
 import Main.GamePanel;
 import Tools.Keylogger;
 import Tools.Tools;
 
 import java.awt.*;
 
-public class Player extends Entity {
+public class Player extends EntityObject {
 
-    GamePanel gp;
     Keylogger kl;
 
     public final int screenX, screenY;
 
     public Player(GamePanel gp, Keylogger kl){
 
-        this.gp = gp;
+        super(gp, gp.tileSize * 2, (gp.worldRowLimit / 2) * gp.tileSize - gp.tileSize / 2);
+        this.speed = 4;
         this.kl = kl;
-        set_start_values();
 
         // sets player in the middle of the screen
         screenX = gp.screenWidth / 2 - gp.tileSize / 2;
@@ -28,13 +28,7 @@ public class Player extends Entity {
         image = tool.load_image("/Entities/Player/player.png", gp.tileSize, gp.tileSize);
     }
 
-    // sets values for player speed and coords which player spawns
-    private void set_start_values(){
-        this.speed = 4;
-        this.worldMapX = gp.tileSize * 10;
-        this.worldMapY = gp.tileSize * 10;
-    }
-
+    @Override
     public void draw(Graphics2D g2){
         g2.drawImage(image, screenX, screenY, null);
     }

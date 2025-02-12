@@ -25,6 +25,9 @@ public class MenuUI {
 
     public void draw_main_menu(Graphics2D g2) {
 
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0,0, gp.screenWidth, gp.screenHeight);
+
         String text;
         int x, y;
         g2.setColor(Color.WHITE);

@@ -1,5 +1,6 @@
 package Tiles;
 
+import EntityObject.Object.Tree;
 import Main.GamePanel;
 import Tools.Tools;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class TileManagement {
 
@@ -16,8 +18,8 @@ public class TileManagement {
     Tile[] tileTypeArray;
     int[][] mapInNums;
 
-    String mapFilePath = "/Maps/test";
-    String tileDataFilePath = "/Maps/test_data";
+    String mapFilePath = "/Maps/forest_map";
+    String tileDataFilePath = "/Maps/forest_map_data";
 
     ArrayList<String> fileNames = new ArrayList<>();
     ArrayList<String> collisionStatus = new ArrayList<>();
@@ -101,6 +103,11 @@ public class TileManagement {
                 for (int j = 0; j < gp.worldColumnLimit; j++) {
                     String[] numbers = line.split(" ");
                     int num = Integer.parseInt(numbers[j]);
+
+                    if (num == 0 || num == 2){
+                        num = randomization_handling(num, j, i);
+                    }
+
                     mapInNums[j][i] = num;
                 }
             }
@@ -108,6 +115,34 @@ public class TileManagement {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private int randomization_handling(int num, int col, int row) {
+
+        Random random = new Random();
+        int number = random.nextInt(0, 150);
+
+        // num list
+        // 0: grass (1 is randomization)
+        // 2: water (3 is randomization)
+
+        switch (num){
+            case 0:
+                if (number <= 10){
+                    num = 1;
+                } else if (number >= 145){
+                    // spawns trees randomly
+                    gp.objectsList.add(new Tree(gp, col * gp.tileSize, row * gp.tileSize));
+                }
+                break;
+            case 2:
+                if (number <= 5) {
+                    num = 3;
+                }
+                break;
+        }
+
+        return num;
     }
 
     public void draw(Graphics2D g2){

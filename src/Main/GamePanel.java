@@ -1,7 +1,7 @@
 package Main;
 
-import Entities.Player;
-import Objects.Tree;
+import EntityObject.Entity.Player;
+import EntityObject.EntityObject;
 import UI.GameUI;
 import UI.MenuUI;
 import Tiles.TileManagement;
@@ -10,6 +10,8 @@ import Tools.Keylogger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -33,20 +35,21 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Thread gameThread;
     public Keylogger keylogger = new Keylogger(this);
+
+    // entities and objects
+    public ArrayList<EntityObject> objectsList = new ArrayList<>();
     public Player player = new Player(this, keylogger);
+
+    // tiles
     TileManagement tileM = new TileManagement(this);
+
+    // UI
     public MenuUI menuUI = new MenuUI(this);
     public GameUI gameUI = new GameUI(this);
 
-    // TEST TREES
-    Tree tree = new Tree(this, 0, 0);
-    Tree tree2 = new Tree(this, tileSize, 0);
-    Tree tree3 = new Tree(this, tileSize, tileSize);
-    Tree tree4 = new Tree(this, 0 , tileSize);
-
     GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
+        this.setBackground(new Color(48, 202, 255));
         this.setDoubleBuffered(true);
         this.addKeyListener(keylogger);
         this.setFocusable(true);
@@ -65,6 +68,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         long frameLenght = 1000000000 / FPS; // 1s / FPS
         long nextFrame = System.nanoTime() + frameLenght;
+        objectsList.add(player);
 
         while (gameRunning) {
 
@@ -96,7 +100,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     void update() {
 
-        // entities move only if currentStatus is play
+        // objectsList move only if currentStatus is play
         if (currentStatus == GameStatus.play) {
             player.movement();
         }
@@ -116,13 +120,12 @@ public class GamePanel extends JPanel implements Runnable {
         if (currentStatus == GameStatus.play || currentStatus == GameStatus.pause) {
 
             tileM.draw(g2);
-            // TESTING TREES
-            tree.draw(g2);
-            tree2.draw(g2);
-            tree3.draw(g2);
-            tree4.draw(g2);
 
-            player.draw(g2);
+            // sorts all objects from back to front
+            sort_objects();
+            for (EntityObject object : objectsList){
+                object.draw(g2);
+            }
 
             gameUI.draw_inventory(g2);
 
@@ -132,5 +135,15 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         g2.dispose();
+    }
+
+    private void sort_objects() {
+
+        objectsList.sort(new Comparator<EntityObject>() {
+            @Override
+            public int compare(EntityObject o1, EntityObject o2) {
+                return Double.compare(o1.worldMapY, o2.worldMapY);
+            }
+        });
     }
 }
