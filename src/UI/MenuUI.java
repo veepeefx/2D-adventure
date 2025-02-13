@@ -1,9 +1,9 @@
 package UI;
 
 import Main.GamePanel;
-import Tools.GameStatus;
-
 import java.awt.*;
+
+import static Utilities.Constants.GameStatus.*;
 
 public class MenuUI {
 
@@ -135,11 +135,11 @@ public class MenuUI {
     // executes the command chosen by the player
     public void execute_command(){
 
-        if (gp.currentStatus == GameStatus.menu){
+        if (gp.gameStatus == MENU){
             switch (menuCommand){
                 // new game
                 case 0:
-                    gp.currentStatus = GameStatus.play;
+                    gp.gameStatus = PLAY;
                     break;
                 // load game
                 case 1:
@@ -154,11 +154,11 @@ public class MenuUI {
                     gp.gameRunning = false;
                     break;
             }
-        } else if (gp.currentStatus == GameStatus.pause){
+        } else if (gp.gameStatus == PAUSE){
             switch (menuCommand){
                 // continue
                 case 0:
-                    gp.currentStatus = GameStatus.play;
+                    gp.gameStatus = PLAY;
                     break;
                 // save game
                 case 1:
@@ -170,7 +170,7 @@ public class MenuUI {
                     break;
                 // main menu
                 case 3:
-                    gp.currentStatus = GameStatus.menu;
+                    gp.gameStatus = MENU;
                     break;
             }
         }

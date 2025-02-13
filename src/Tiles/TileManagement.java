@@ -1,8 +1,8 @@
 package Tiles;
 
-import EntityObject.Object.Tree;
+import EntityObject.Object.SpruceTree;
 import Main.GamePanel;
-import Tools.Tools;
+import Utilities.Tools;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -64,8 +64,8 @@ public class TileManagement {
         Tools tool = new Tools();
 
         tileTypeArray[index] = new Tile();
-        tileTypeArray[index].image = tool.load_image("/Tiles/" + imagePath,
-                                                            gp.tileSize, gp.tileSize);
+        tileTypeArray[index].image = tool.load_image("/Tiles/" + imagePath);
+        tileTypeArray[index].image = tool.scale_image(tileTypeArray[index].image, gp.tileSize, gp.tileSize);
         tileTypeArray[index].collision = collision;
     }
 
@@ -132,7 +132,7 @@ public class TileManagement {
                     num = 1;
                 } else if (number >= 145){
                     // spawns trees randomly
-                    gp.objectsList.add(new Tree(gp, col * gp.tileSize, row * gp.tileSize));
+                    gp.objectsList.add(new SpruceTree(gp, col * gp.tileSize, row * gp.tileSize));
                 }
                 break;
             case 2:

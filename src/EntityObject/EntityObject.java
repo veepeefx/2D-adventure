@@ -9,7 +9,11 @@ public abstract class EntityObject {
 
     GamePanel gp;
     public double worldMapX, worldMapY;
+
+    // animation sprites
+    public BufferedImage[][] animations;
     public BufferedImage image;
+
     // if multi tile change these to the right dimensions
     public int widthInTiles = 1, heightInTiles = 1;
 

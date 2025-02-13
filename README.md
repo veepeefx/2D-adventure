@@ -1,6 +1,6 @@
 GAME CURRENTLY UNDER DEVELOPMENT!
 
-2D adveture game where players goal is to gather resources and trade them with NPC's.
+2D adventure game where players goal is to gather resources and trade them with NPC's.
 
 Future additions:
   - Items to gather
@@ -9,6 +9,8 @@ Future additions:
   - Multiple levels (mines, shopping area, forest etc.)
   - NPC's with interactions
   - Proper UI with menu
+
+Player Sprites are from: https://otterisk.itch.io/hana-caraka-base-character
 
 Dependencies:
 
