@@ -15,25 +15,14 @@ public class Constants {
         public static final int IDLE = 1;
         public static final int WALK = 2;
 
-
         public static int get_player_sprite_amount(int action){
-/*
-            if (action == IDLE_RIGHT || action == IDLE_LEFT || action == IDLE_DOWN ||action == IDLE_UP){
-                return 4;
-            } else if (action == WALK_RIGHT || action == WALK_LEFT || action == WALK_DOWN ||action == WALK_UP){
-                return 8;
-            } else {
-                return 4;
-            }
-<
- */
+
             if (action == IDLE) return 4;
             else if (action == WALK) return 8;
             else return -1;
         }
     }
 
-    // GAME STATUS
     public static class GameStatus {
 
         public static final int MENU = 0;

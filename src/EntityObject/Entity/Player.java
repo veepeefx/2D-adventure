@@ -10,14 +10,15 @@ import java.awt.image.BufferedImage;
 
 import static Utilities.Constants.ActionTypes.*;
 import static Utilities.Constants.Direction.*;
+import static Utilities.Constants.GameConstants.*;
 
 public class Player extends EntityObject {
 
     Keylogger kl;
+    GamePanel gp;
     public final int screenX, screenY;
 
     private int playerAction = IDLE;
-    public int direction = RIGHT;
     private int aniSpeed = 12;
     private int aniTick = 0;
     private int aniIndex = 0;
@@ -25,12 +26,16 @@ public class Player extends EntityObject {
     public Player(GamePanel gp, Keylogger kl){
 
         super(gp, gp.tileSize * 2, (gp.worldRowLimit / 2) * gp.tileSize - gp.tileSize / 2);
+        this.gp = gp;
         this.speed = 4;
         this.kl = kl;
 
+        this.hitBox = new Rectangle(5 * SCALE, 10 * SCALE, 5 * SCALE, 4 * SCALE);
+        this.direction = RIGHT;
+
         // sets player in the middle of the screen
-        screenX = gp.screenWidth / 2 - gp.tileSize / 2;
-        screenY = gp.screenHeight / 2 - gp.tileSize / 2;
+        this.screenX = gp.screenWidth / 2 - gp.tileSize / 2;
+        this.screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
         Tools tool = new Tools();
         // load scaled image
@@ -115,6 +120,7 @@ public class Player extends EntityObject {
             dx += 1;
         }
 
+        // changing between different player animations and animation speeds
         if (!kl.downPressed && !kl.upPressed && !kl.leftPressed && !kl.rightPressed){
             playerAction = IDLE;
             aniSpeed = 12;
@@ -129,7 +135,33 @@ public class Player extends EntityObject {
             dy = dy / Math.sqrt(2);
         }
 
+        // saving previous position to be used if player collides to something
+        double tempX = worldMapX;
+        double tempY = worldMapY;
+
+        // updating players position
         worldMapX += dx * speed;
         worldMapY += dy * speed;
+
+        // checking collision between player and tiles. checks if collision happens with
+        // two tiles in front of player.
+        if (gp.collisionC.tile_entity_collision(this)){
+            worldMapX = tempX;
+            worldMapY = tempY;
+
+        // checking collision between player and close by entities/objects. if collision
+        // happens then we need to revert the changes and go back to previous position
+        // where player didn't hit anything. 2 more if statements to handle if player is
+        // dragging along walls
+        } else if (gp.collisionC.entity_object_collision(this)){
+            worldMapX = tempX;
+            if (gp.collisionC.entity_object_collision(this)){
+                worldMapX += dx * speed;
+                worldMapY = tempY;
+                if (gp.collisionC.entity_object_collision(this)){
+                    worldMapX = tempX;
+                }
+            }
+        }
     }
 }

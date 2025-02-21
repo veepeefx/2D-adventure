@@ -11,7 +11,7 @@ public class Keylogger implements KeyListener {
 
     public Boolean upPressed = false, downPressed = false,
                       leftPressed = false, rightPressed = false;
-
+    public Boolean devMenu = false;
     GamePanel gp;
 
     public Keylogger(GamePanel gp){
@@ -76,6 +76,11 @@ public class Keylogger implements KeyListener {
         // opening pause menu
         if (code == KeyEvent.VK_ESCAPE){
             gp.gameStatus = PAUSE;
+        }
+
+        // opening dev hud
+        if (code == KeyEvent.VK_F2){
+            devMenu = !devMenu;
         }
 
         // accessing inventory

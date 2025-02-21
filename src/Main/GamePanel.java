@@ -5,6 +5,7 @@ import EntityObject.EntityObject;
 import UI.GameUI;
 import UI.MenuUI;
 import Tiles.TileManagement;
+import Utilities.CollisionCheck;
 import Utilities.Keylogger;
 
 import javax.swing.*;
@@ -36,13 +37,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Thread gameThread;
     public Keylogger keylogger = new Keylogger(this);
+    public CollisionCheck collisionC = new CollisionCheck(this);
 
     // entities and objects
     public ArrayList<EntityObject> objectsList = new ArrayList<>();
     public Player player = new Player(this, keylogger);
 
     // tiles
-    TileManagement tileM = new TileManagement(this);
+    public TileManagement tileM = new TileManagement(this);
 
     // UI
     public MenuUI menuUI = new MenuUI(this);
@@ -125,6 +127,10 @@ public class GamePanel extends JPanel implements Runnable {
             sort_objects();
             for (EntityObject object : objectsList){
                 object.draw(g2);
+            }
+
+            if (keylogger.devMenu){
+                collisionC.draw_hit_box(g2);
             }
 
             gameUI.draw_inventory(g2);

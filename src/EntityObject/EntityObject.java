@@ -9,6 +9,7 @@ public abstract class EntityObject {
 
     GamePanel gp;
     public double worldMapX, worldMapY;
+    public Rectangle hitBox;
 
     // animation sprites
     public BufferedImage[][] animations;
@@ -19,11 +20,15 @@ public abstract class EntityObject {
 
     // entity specific
     public int speed;
+    public int direction;
 
     public EntityObject(GamePanel gp, int x, int y){
         this.gp = gp;
         this.worldMapX = x;
         this.worldMapY = y;
+
+        // hitBox default is the size of the whole tile
+        hitBox = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
     }
 
     public void draw(Graphics2D g2){

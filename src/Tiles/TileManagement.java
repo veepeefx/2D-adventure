@@ -15,8 +15,8 @@ import java.util.Random;
 public class TileManagement {
 
     GamePanel gp;
-    Tile[] tileTypeArray;
-    int[][] mapInNums;
+    public Tile[] tileTypeArray;
+    public int[][] mapInNums;
 
     String mapFilePath = "/Maps/forest_map";
     String tileDataFilePath = "/Maps/forest_map_data";
@@ -65,7 +65,8 @@ public class TileManagement {
 
         tileTypeArray[index] = new Tile();
         tileTypeArray[index].image = tool.load_image("/Tiles/" + imagePath);
-        tileTypeArray[index].image = tool.scale_image(tileTypeArray[index].image, gp.tileSize, gp.tileSize);
+        tileTypeArray[index].image = tool.scale_image(tileTypeArray[index].image,
+                                                        gp.tileSize, gp.tileSize);
         tileTypeArray[index].collision = collision;
     }
 
@@ -75,15 +76,9 @@ public class TileManagement {
         tileTypeArray = new Tile[fileNames.size()];
 
         for (int i = 0; i < fileNames.size(); i++){
-            String fileName;
-            boolean collision;
 
-            fileName = fileNames.get(i);
-            if (collisionStatus.get(i).equals("true")){
-                collision = true;
-            } else {
-                collision = false;
-            }
+            String fileName = fileNames.get(i);
+            boolean collision = collisionStatus.get(i).equals("true");
 
             make_tile(i, fileName, collision);
         }
@@ -132,7 +127,8 @@ public class TileManagement {
                     num = 1;
                 } else if (number >= 145){
                     // spawns trees randomly
-                    gp.objectsList.add(new SpruceTree(gp, col * gp.tileSize, row * gp.tileSize));
+                    gp.objectsList.add(new SpruceTree(gp, col * gp.tileSize,
+                                                            row * gp.tileSize));
                 }
                 break;
             case 2:
