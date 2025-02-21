@@ -1,18 +1,19 @@
-GAME CURRENTLY UNDER DEVELOPMENT!
+## GAME CURRENTLY UNDER DEVELOPMENT!
 
-2D adventure game where players goal is to gather resources and trade them with NPC's.
+#### 2D adventure game where players goal is to gather resources and trade them with NPC's.
 
-Future additions:
+![Image](https://github.com/user-attachments/assets/3649cfab-d6d0-491e-be9a-95da4f06a564)
+
+#### Future additions:
   - Items to gather
   - Inventory
   - Possibility to save/load progress
   - Multiple levels (mines, shopping area, forest etc.)
   - NPC's with interactions
-  - Proper UI with menu
 
 Player Sprites are from: https://otterisk.itch.io/hana-caraka-base-character
 
-Dependencies:
+#### Dependencies:
 
 IntelliJ IDEA Community Edition
   - Version usen in project is 2024.3.1.1
